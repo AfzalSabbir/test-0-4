@@ -21,8 +21,8 @@ class UserController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 
+     * @return void
      */
     public function create()
     {
@@ -32,12 +32,12 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return bool|int
      */
     public function store(Request $request)
     {
-        //
+        return User::query()->create($request->all());
     }
 
     /**
@@ -67,13 +67,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return bool|int
      */
     public function update(Request $request, $id)
     {
-        //
+        return User::query()->find($id)->update($request->all());
     }
 
     /**
