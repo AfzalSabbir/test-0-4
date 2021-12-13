@@ -13,6 +13,14 @@
 |
 */
 
+use App\Http\Controllers\UserController;
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/users', 'UserController@index');
+$router->get('/user/{id}', 'UserController@show');
+$router->get('/user/{id}/edit', 'UserController@edit');
+$router->put('/user/{id}/edit', 'UserController@store');
+$router->delete('/user/{id}', 'UserController@destroy');
