@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,12 @@ class UserController extends Controller
      */
     private $userRepository;
 
+    /**
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->userRepository = new $userRepository();
     }
 
     /**
@@ -26,7 +30,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        return (new $this->userRepository())->index();
+        return $this->userRepository->index();
     }
 
     /**
@@ -43,11 +47,11 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return bool|int
+     * @return Builder|Model
      */
     public function store(Request $request)
     {
-        return (new $this->userRepository())->store($request);
+        return $this->userRepository->store($request);
     }
 
     /**
@@ -58,7 +62,7 @@ class UserController extends Controller
      */
     public function show($id): JsonResponse
     {
-        return (new $this->userRepository())->show($id);
+        return $this->userRepository->show($id);
     }
 
     /**
@@ -81,7 +85,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return (new $this->userRepository())->update($request, $id);
+        return $this->userRepository->update($request, $id);
     }
 
     /**
@@ -92,6 +96,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        return (new $this->userRepository())->delete($id);
+        return $this->userRepository->delete($id);
     }
 }

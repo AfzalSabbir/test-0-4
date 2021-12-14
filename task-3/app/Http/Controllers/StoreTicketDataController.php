@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\StoreTicketDataJob;
-use App\Models\Ticket;
+use App\Repositories\TicketRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Queue;
 
 class StoreTicketDataController extends Controller
 {
+    /**
+     * @var TicketRepository
+     */
+    private $ticketRepository;
+
+    /**
+     * @param TicketRepository $ticketRepository
+     */
+    public function __construct(TicketRepository $ticketRepository)
+    {
+        $this->ticketRepository = new $ticketRepository();
+    }
+
     /**
      * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        $data            = $request->except('api_token');
-        $data['user_id'] = Auth::user()->id;
-
-        Queue::push(new StoreTicketDataJob($data));
-
-        return response()->json(['message' => 'Success!']);
+        return $this->ticketRepository->store($request);
     }
 }

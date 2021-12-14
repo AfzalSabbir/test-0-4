@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 interface UserRepositoryInterface
@@ -10,7 +10,7 @@ interface UserRepositoryInterface
     /**
      * @return mixed
      */
-    public function index();
+    public function index(): JsonResponse;
 
     /**
      * @param Request $request
@@ -22,7 +22,7 @@ interface UserRepositoryInterface
      * @param $id
      * @return mixed
      */
-    public function show($id);
+    public function show($id): JsonResponse;
 
     /**
      * @param Request $request

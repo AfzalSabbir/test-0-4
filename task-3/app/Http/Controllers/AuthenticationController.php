@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\AuthRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,23 +12,25 @@ use Illuminate\Support\Str;
 class AuthenticationController extends Controller
 {
     /**
+     * @var AuthRepository
+     */
+    private $authRepository;
+
+    /**
+     * @param AuthRepository $authRepository
+     */
+    public function __construct(AuthRepository $authRepository)
+    {
+        $this->authRepository = new $authRepository();
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      */
     public function register(Request $request): JsonResponse
     {
-        $this->validate($request, [
-            "name"     => "min:3",
-            "email"    => "required|unique:users",
-            "password" => "required",
-        ]);
-
-        $data             = $request->all();
-        $data['password'] = Hash::make($data['password']);
-
-        User::query()->create($data);
-
-        return $this->login($request);
+        return $this->authRepository->register($request);
     }
 
     /**
@@ -36,24 +39,7 @@ class AuthenticationController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $user = User::query()->where('email', $request->only('email'))->firstOrFail();
-
-        if (Hash::check($request->password, $user->password)) {
-            $user->api_token = Str::random(64);
-            $user->save();
-
-            $response = [
-                'message' => 'Logout successful!',
-                'data'    => $user->makeVisible(['api_token'])
-            ];
-        } else {
-            $response = [
-                'message' => 'Wrong username or password',
-                'data'    => []
-            ];
-        }
-
-        return response()->json($response);
+        return $this->authRepository->login($request);
     }
 
     /**
@@ -62,10 +48,6 @@ class AuthenticationController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $user            = User::query()->where($request->only(['api_token']))->firstOrFail();
-        $user->api_token = null;
-        $user->save();
-
-        return response()->json(['message' => 'Logout successful!']);
+        return $this->authRepository->logout($request);
     }
 }

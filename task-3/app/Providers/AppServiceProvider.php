@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\AuthRepository;
+use App\Repositories\Interfaces\AuthRepositoryInterface;
 use App\Repositories\Interfaces\TicketRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\TicketRepository;
@@ -19,5 +21,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(TicketRepositoryInterface::class, TicketRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
     }
 }
