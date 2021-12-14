@@ -13,7 +13,7 @@
 <a style="<?= $_SERVER['REQUEST_URI'] === '/task-3'
     ? 'color: green; font-weight: bold;'
     : '' ?>"
-   href="/task-3">Task 3</a> |
+   href="http://localhost:8000" target="_blank">Task 3</a> |
 <a style="<?= $_SERVER['REQUEST_URI'] === '/task-4'
     ? 'color: green; font-weight: bold;'
     : '' ?>"
