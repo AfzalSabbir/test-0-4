@@ -2,10 +2,23 @@
 <html lang="en">
 <head>
     <title>
-        Test 3
+        Test 2 | Used JavaScript
     </title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            padding: 2px;
+        }
+
+        th, td {
+            padding: 2px 8px;
+        }
+    </style>
 </head>
 <body>
+
+<?php
+include "../tabs.php"; ?>
 
 <table id="table">
     <thead>
@@ -338,11 +351,11 @@
     result.forEach((item) => {
         tableTbodyData +=
             `<tr>
-                <td>${item.SL ?? ''}</td>
-                <td>${item.Lat ?? ''}</td>
-                <td>${item.Lng ?? ''}</td>
-                <td>${item.Division ?? ''}</td>
-                <td>${item.isMatched ?? ''}</td>
+                <td style="text-align: center;">${item.SL ?? ''}</td>
+                <td style="text-align: left;">${item.Lat ?? ''}</td>
+                <td style="text-align: left;">${item.Lng ?? ''}</td>
+                <td style="text-align: left;">${item.Division ?? ''}</td>
+                <td style="text-align: center;">${item.isMatched ?? ''}</td>
             </tr>`;
     });
     tableTbody.innerHTML = tableTbodyData;
