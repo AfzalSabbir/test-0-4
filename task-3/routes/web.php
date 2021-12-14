@@ -21,6 +21,7 @@ $router->post('/login', ['as' => 'login', 'uses' => 'AuthenticationController@lo
 $router->post('/register', ['as' => 'register', 'uses' => 'AuthenticationController@register']);
 
 $router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->post('/store-ticket-data', ['as' => 'store-ticket-data', 'uses' => 'StoreTicketDataController@store']);
     $router->post('/logout', ['as' => 'logout', 'uses' => 'AuthenticationController@logout']);
     $router->get('/user', ['as' => 'user.index', 'uses' => 'UserController@index']);
     $router->post('/user', ['as' => 'user.store', 'uses' => 'UserController@store']);

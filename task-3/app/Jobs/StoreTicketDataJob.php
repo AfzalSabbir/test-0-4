@@ -2,16 +2,21 @@
 
 namespace App\Jobs;
 
+use App\Models\Ticket;
+use Exception;
+
 class StoreTicketDataJob extends Job
 {
+    private $data;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -21,6 +26,14 @@ class StoreTicketDataJob extends Job
      */
     public function handle()
     {
-        //
+        Ticket::query()->create($this->data);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function failed(Exception $e)
+    {
+        throw $e;
     }
 }

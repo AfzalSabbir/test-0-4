@@ -18,7 +18,8 @@ class CreateTicketsTable extends Migration
             $table->integer('serial');
             $table->string('from_counter');
             $table->string('to_counter');
-            $table->float('amount', 10, 2);
+            $table->float('amount', 10);
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
             $table->timestamps();
         });
