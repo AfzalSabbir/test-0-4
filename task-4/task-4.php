@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>
-        Test 3
-    </title>
-</head>
-<body>
 <?php
 
 $arrays = [
@@ -118,5 +110,3 @@ print_r(json_encode($arr2D_full["answer"]));
 echo "</pre>";
 
 ?>
-</body>
-</html>
