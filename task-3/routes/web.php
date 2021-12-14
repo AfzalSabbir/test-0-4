@@ -13,15 +13,18 @@
 |
 */
 
-use App\Http\Controllers\UserController;
-
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/user', 'UserController@index');
-$router->get('/user/{id}', 'UserController@show');
-$router->post('/user', 'UserController@store');
-$router->get('/user/{id}/edit', 'UserController@edit');
-$router->put('/user/{id}/edit', 'UserController@update');
-$router->delete('/user/{id}', 'UserController@destroy');
+$router->post('/login', ['as' => 'login', 'uses' => 'AuthenticationController@login']);
+$router->post('/register', ['as' => 'register', 'uses' => 'AuthenticationController@register']);
+
+$router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->post('/logout', ['as' => 'logout', 'uses' => 'AuthenticationController@logout']);
+    $router->get('/user', ['as' => 'user.index', 'uses' => 'UserController@index']);
+    $router->post('/user', ['as' => 'user.store', 'uses' => 'UserController@store']);
+    $router->get('/user/{id}', ['as' => 'user.show', 'uses' => 'UserController@show']);
+    $router->put('/user/{id}/edit', ['as' => 'user.update', 'uses' => 'UserController@update']);
+    $router->delete('/user/{id}', ['as' => 'user.destroy', 'uses' => 'UserController@destroy']);
+});

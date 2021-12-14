@@ -21,7 +21,7 @@ class UserController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * 
+     *
      * @return void
      */
     public function create()
@@ -56,12 +56,11 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param $id
-     * @return JsonResponse
+     * @return void
      */
-    public function edit($id): JsonResponse
+    public function edit($id)
     {
-        $user = User::query()->find($id);
-        return response()->json($user);
+        //
     }
 
     /**
@@ -73,7 +72,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return User::query()->find($id)->update($request->all());
+        return User::query()->findOrFail($id)->update($request->except(['api_token']));
     }
 
     /**
