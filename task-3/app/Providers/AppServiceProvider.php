@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\TicketRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\TicketRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(TicketRepositoryInterface::class, TicketRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 }

@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +26,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $user = User::query()->get();
-        return response()->json($user);
+        return (new $this->userRepository())->index();
     }
 
     /**
@@ -37,7 +47,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::query()->create($request->all());
+        return (new $this->userRepository())->store($request);
     }
 
     /**
@@ -48,8 +58,7 @@ class UserController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $user = User::query()->find($id);
-        return response()->json($user);
+        return (new $this->userRepository())->show($id);
     }
 
     /**
@@ -72,7 +81,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return User::query()->findOrFail($id)->update($request->except(['api_token']));
+        return (new $this->userRepository())->update($request, $id);
     }
 
     /**
@@ -83,6 +92,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        return User::query()->find($id)->delete();
+        return (new $this->userRepository())->delete($id);
     }
 }
