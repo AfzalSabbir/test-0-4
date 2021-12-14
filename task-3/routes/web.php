@@ -25,6 +25,6 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/user', ['as' => 'user.index', 'uses' => 'UserController@index']);
     $router->post('/user', ['as' => 'user.store', 'uses' => 'UserController@store']);
     $router->get('/user/{id}', ['as' => 'user.show', 'uses' => 'UserController@show']);
-    $router->put('/user/{id}/edit', ['as' => 'user.update', 'uses' => 'UserController@update']);
+    $router->put('/user/{id}', ['as' => 'user.update', 'uses' => 'UserController@update']);
     $router->delete('/user/{id}', ['as' => 'user.destroy', 'uses' => 'UserController@destroy']);
 });
