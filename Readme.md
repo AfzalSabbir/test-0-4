@@ -1,7 +1,7 @@
-##Run
-```php -S localhost:9000```
+#Run
+```php -S localhost:9000``` in root directory
 
-##Select one of task
+#Select one of task
 <b> Task 0 | Task 1 | Task 2 | Task 3 | Task 4 </b>
 
 [
