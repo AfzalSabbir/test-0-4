@@ -9,3 +9,5 @@
 <br>
 Command: ```php -S localhost:8000 -t public```
 ]
+
+Check this video of working [[click here]](https://drive.google.com/file/d/11ovdJxVFVw5f0YWslUJ-vgfNVw_iwTZH/view)

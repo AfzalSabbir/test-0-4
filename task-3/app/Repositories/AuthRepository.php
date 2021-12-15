@@ -29,14 +29,15 @@ class AuthRepository implements AuthRepositoryInterface
 
         User::query()->create($data);
 
-        return $this->login($request);
+        return $this->login($request, true);
     }
 
     /**
      * @param Request $request
+     * @param bool $register
      * @return JsonResponse
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request, bool $register = false): JsonResponse
     {
         $user = User::query()->where('email', $request->only('email'))->firstOrFail();
 
@@ -45,7 +46,9 @@ class AuthRepository implements AuthRepositoryInterface
             $user->save();
 
             $response = [
-                'message' => 'Logout successful!',
+                'message' => ($register
+                        ? 'Register'
+                        : 'Login') . ' successful!',
                 'data'    => $user->makeHidden('id')->makeVisible(['api_token'])
             ];
         } else {

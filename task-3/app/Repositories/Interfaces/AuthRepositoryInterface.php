@@ -15,9 +15,10 @@ interface AuthRepositoryInterface
 
     /**
      * @param Request $request
+     * @param bool $register
      * @return JsonResponse
      */
-    public function login(Request $request): JsonResponse;
+    public function login(Request $request, bool $register = false): JsonResponse;
 
     /**
      * @param Request $request
