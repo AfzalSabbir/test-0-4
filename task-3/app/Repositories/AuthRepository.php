@@ -3,12 +3,14 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Repositories\Interfaces\AuthRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class AuthRepository
+class AuthRepository implements AuthRepositoryInterface
 {
     /**
      * @param Request $request
@@ -16,7 +18,7 @@ class AuthRepository
      */
     public function register(Request $request): JsonResponse
     {
-        $this->validate($request, [
+        Validator::make($request->all(), [
             "name"     => "min:3",
             "email"    => "required|unique:users",
             "password" => "required",
@@ -44,7 +46,7 @@ class AuthRepository
 
             $response = [
                 'message' => 'Logout successful!',
-                'data'    => $user->makeVisible(['api_token'])
+                'data'    => $user->makeHidden('id')->makeVisible(['api_token'])
             ];
         } else {
             $response = [
