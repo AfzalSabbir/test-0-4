@@ -36,6 +36,7 @@ include "../tabs.php"; ?>
 </table>
 
 <script>
+    let time0        = (new Date()).getTime();
     let testDataSets = [
         {"SL": "1", "Lat": "24.69478177", "Lng": "88.15597944", "Division": "Rajshahi"},
         {"SL": "2", "Lat": "24.82572113", "Lng": "88.25897626", "Division": "Rajshahi"},
@@ -394,9 +395,7 @@ include "../tabs.php"; ?>
     /**
      * Getting result of testDataSets
      */
-    let time0  = (new Date()).getTime();
     let result = divisions.setTestDataSets(testDataSets).ifLocationExistIn();
-    let time1  = (new Date()).getTime();
     console.log(result);
 
     /**
@@ -417,6 +416,7 @@ include "../tabs.php"; ?>
                 <td style="text-align: center;">${item.time ?? 0}</td>
             </tr>`;
     });
+    let time1            = (new Date()).getTime();
     tableTbodyData +=
         `<tr>
                 <td colspan="5" style="text-align: center;">Total Time (ms)</td>
