@@ -28,6 +28,7 @@ include "../tabs.php"; ?>
         <th>Lng</th>
         <th>Division</th>
         <th>IsMatched</th>
+        <th>Time (ms)</th>
     </tr>
     </thead>
     <tbody>
@@ -50,6 +51,11 @@ include "../tabs.php"; ?>
         {"SL": "12", "Lat": "24.76093527", "Lng": "88.70107323", "Division": "Rajshahi"},
         {"SL": "13", "Lat": "24.80302296", "Lng": "88.9269136", "Division": "Rajshahi"},
         {"SL": "23", "Lat": "24.27384655", "Lng": "88.756127", "Division": "Rajshahi"},
+
+        // Test purpose location of Dhaka
+        {"SL": "30", "Lat": "24.015181", "Lng": "90.228947", "Division": "Rajshahi"}, // Dhaka
+        {"SL": "31", "Lat": "24.015181", "Lng": "90.228947", "Division": "Dhaka"}, // Dhaka
+        {"SL": "32", "Lat": "24.725090", "Lng": "90.418760", "Division": "Chattogram"}, // Mymensingh
     ];
     const divisions  = {
         testDataSets: null,
@@ -333,12 +339,64 @@ include "../tabs.php"; ?>
                 return testDataSet;
             });
         },
+
+        /**
+         * Verifying locations
+         *
+         * @param testDataSets
+         * @returns {*}
+         */
+        ifLocationExistIn(testDataSets = null) {
+            testDataSets = testDataSets
+                           ? this.getArray(testDataSets)
+                           : this.testDataSets;
+            let time     = 0;
+
+            return testDataSets?.map((testDataSet) => {
+                time                  = (new Date()).getTime()
+                //testDataSet.isMatched = "no";
+                testDataSet.isMatched = this.isLocationIn({
+                    x     : testDataSet.Lat,
+                    y     : testDataSet.Lng,
+                    points: this[testDataSet.Division]
+                }) ? "yes" : "no";
+                testDataSet.time      = (new Date()).getTime() - time;
+                return testDataSet;
+            });
+        },
+
+        isLocationIn({x, y, points}) {
+            let pointArr = {x: points.map(point => point.Lat), y: points.map(point => point.Lng)};
+
+            let i,
+                j   = pointArr.x.length - 1;
+            let odd = false;
+
+            for (i = 0; i < pointArr.x.length; i++) {
+                if ((pointArr.y[i] < y && pointArr.y[j] >= y || pointArr.y[j] < y && pointArr.y[i] >= y)
+                    && (pointArr.x[i] <= x || pointArr.x[j] <= x)) {
+                    odd ^= (
+                               pointArr.x[i]
+                               + (y - pointArr.y[i])
+                               * (pointArr.x[j] - pointArr.x[i])
+                               / (pointArr.y[j] - pointArr.y[i])
+                           )
+                           < x;
+                }
+
+                j = i;
+            }
+
+            return odd;
+        },
     };
 
     /**
      * Getting result of testDataSets
      */
-    let result = divisions.setTestDataSets(testDataSets).verifyLocation();
+    let time0  = (new Date()).getTime();
+    let result = divisions.setTestDataSets(testDataSets).ifLocationExistIn();
+    let time1  = (new Date()).getTime();
     console.log(result);
 
     /**
@@ -356,8 +414,14 @@ include "../tabs.php"; ?>
                 <td style="text-align: left;">${item.Lng ?? ''}</td>
                 <td style="text-align: left;">${item.Division ?? ''}</td>
                 <td style="text-align: center;">${item.isMatched ?? ''}</td>
+                <td style="text-align: center;">${item.time ?? 0}</td>
             </tr>`;
     });
+    tableTbodyData +=
+        `<tr>
+                <td colspan="5" style="text-align: center;">Total Time (ms)</td>
+                <td style="text-align: center;">${time1 - time0}</td>
+            </tr>`;
     tableTbody.innerHTML = tableTbodyData;
 </script>
 </body>
