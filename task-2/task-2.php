@@ -353,8 +353,8 @@ include "../tabs.php"; ?>
             let time     = 0;
 
             return testDataSets?.map((testDataSet) => {
-                time                  = (new Date()).getTime()
-                //testDataSet.isMatched = "no";
+                time = (new Date()).getTime();
+
                 testDataSet.isMatched = this.isLocationIn({
                     x     : testDataSet.Lat,
                     y     : testDataSet.Lng,
